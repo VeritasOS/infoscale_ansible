@@ -1,0 +1,24 @@
+---
+- name: Add Disks to VM   
+  vmware_guest_disk:
+    hostname: "{{ vc_host }}" 
+    username: "{{ vc_user }}"
+    password: "{{ vc_pass }}"
+    datacenter: "{{ vc_datacenter }}"
+    validate_certs: no
+    name: "{{ guest_vm }}"
+    disk:
+      - size_gb: 20
+        type: eagerzeroedthick
+        state: present
+        datastore: "{{ datastore }}"
+        scsi_controller: 0
+        unit_number: 1
+      - size_gb: 20
+        type: eagerzeroedthick
+        state: present
+        datastore: "{{ datastore }}"
+        scsi_controller: 0
+        unit_number: 2
+  delegate_to: localhost
+

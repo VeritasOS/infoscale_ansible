@@ -1,0 +1,16 @@
+---  
+- name: Facters
+  veritas_infoscale:
+    module: site_facters
+  register: facts
+- name: Install InfoScale Enterprise
+  veritas_infoscale:
+    module: yum
+    repository_name: linux2_7.4.2_Repo
+    repository_baseurl: http://10.84.162.215/infoscale/dvd1-redhatlinux/rhel8_x86_64/rpms/
+    gpgcheck: 0
+    #gpgkey: http://xx.xxx.xxx.xx/ rpms/RPM-GPG-KEY-veritas-infoscale7
+    product: 'ENTERPRISE' 
+    product_version: 7.4.2
+    facters: "{{ groups['all'] |map('extract',  hostvars, ['facts','infoscale_facts'])| select()|list }}"
+    state: present

@@ -1,0 +1,51 @@
+---
+- name: Facters
+  veritas_infoscale:
+    module: site_facters
+  register: facts
+- name:  Configure SFCFSHA
+  veritas_infoscale:
+    module: sfcfsha_config
+    cluster_name: isc_linux567
+    systems: [linux5-myee,linux6-myee,linux7-myee]
+    cluster_uuid: 5c71d171-3ca3-4961-92ff-a5d98ea7e942
+    component: sfcfsha
+    product_version: 7.4.2
+    edgeserver_hostname: telemetry.veritas.com
+    edgeserver_port: 443
+    method: udp
+    seednode: linux5-myee
+    license: ENTERPRISE
+    state: present
+    private_link: ens224,ens256
+    udp_link:
+    - system: 'linux5-myee'
+      heartbeat_link:
+      - nic: ens224
+        ip: 10.0.0.2/23
+        port: 50000
+      - nic: ens256
+        ip: 10.1.0.2/23
+        port: 50001
+    - system: 'linux6-myee'
+      heartbeat_link:
+      - nic: ens224
+        ip: 10.0.0.3/23
+        port: 50000
+      - nic: ens256
+        ip: 10.1.0.3/23
+        port: 50001
+    - system: 'linux7-myee'
+      heartbeat_link:
+      - nic: ens224
+        ip: 10.0.0.4/23
+        port: 50000
+      - nic: ens256
+        ip: 10.1.0.4/23
+        port: 50001
+    low_priority_link: ens192
+    tcp_link: null
+    vcs_clusterid: 12346
+    enable_lgf: 1
+    facters: "{{ groups['all'] |map('extract', hostvars, ['facts','infoscale_facts'])| select()|list }}"
+  

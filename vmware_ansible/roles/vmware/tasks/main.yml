@@ -1,0 +1,75 @@
+---
+- name:  Clone a virtual machine from Linux template and customize
+  vmware_guest:
+    hostname: "{{ vc_host }}"
+    username: "{{ vc_user }}"
+       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       # Please do not put your password here in plain text.             !
+       # use the ansible-vault create utility to create an encrypted key !
+       # and pass it in using -e @password.yml --ask-vault-pass          !
+       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    password: "{{ vc_pass }}"
+    validate_certs: no
+    datacenter: "{{ vc_datacenter }}"
+    esxi_hostname: "{{ esx_host }}"
+    state: present
+    folder: "/Technical Marketing Lab/vm/ansible_infoscale_cluster"
+    template: "{{ template_name }}"
+    name: "{{ guest_vm }}"
+    networks:
+      - name: "{{ network_name }}"
+        ip: "{{ vm_ip }}"
+        netmask: "{{ network_mask }}"
+        gateway: "{{ network_gateway }}"
+      - name: "{{ llt1_name }}"
+        ip: "{{ vm_llt1 }}"
+        netmask: "{{ network_mask }}"
+      - name: "{{ llt2_name }}"
+        ip: "{{ vm_llt2 }}"
+        netmask: "{{ network_mask }}"
+    customization:
+      hostname: "{{ guest_vm }}"
+      dns_servers:
+        - "{{ dns_1 }}"
+        - "{{ dns_2 }}"          
+  delegate_to: localhost
+
+- name: Add Disks to VM   
+  vmware_guest_disk:
+    hostname: "{{ vc_host }}" 
+    username: "{{ vc_user }}"
+    password: "{{ vc_pass }}"
+    datacenter: "{{ vc_datacenter }}"
+    validate_certs: no
+    name: "{{ guest_vm }}"
+    disk:
+      - size_gb: 20
+        type: eagerzeroedthick
+        state: present
+        datastore: "{{ datastore }}"
+        scsi_controller: 0
+        unit_number: 1
+      - size_gb: 20
+        type: eagerzeroedthick
+        state: present
+        datastore: "{{ datastore }}"
+        scsi_controller: 0
+        unit_number: 2
+  delegate_to: localhost
+
+- name: Power on VMs 
+  vmware_guest_powerstate:
+    hostname: "{{ vc_host }}"
+    username: "{{ vc_user }}"
+       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       # Please do not put your password here in plain text.             !
+       # use the ansible-vault create utility to create an encrypted key !
+       # and pass it in using -e @password.yml --ask-vault-pass          !
+       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    password: "{{ vc_pass }}"
+    validate_certs: no
+    state: powered-on
+    name: "{{ guest_vm }}"
+    folder: "/Technical Marketing Lab/vm/ansible_infoscale_cluster"
+  delegate_to: localhost
+

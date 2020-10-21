@@ -1,0 +1,7 @@
+---
+- name: Install Pre-requisites for InfoScale.
+  hosts: is1
+  gather_facts: False
+  any_errors_fatal: true
+  roles: 
+    - common

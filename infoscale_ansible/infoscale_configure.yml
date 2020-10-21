@@ -1,0 +1,9 @@
+---
+- name: Configure InfoScale
+  hosts: is1
+  gather_facts: False
+  any_errors_fatal: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python2 
+  tasks:
+    - include: roles/infoscale/tasks/configure_sfcfsha.yml

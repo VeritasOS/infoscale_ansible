@@ -1,0 +1,10 @@
+---
+- name: Deploy VMs from template.
+  hosts: vms
+  connection: local
+  vars_files:
+    - ./group_vars/vars
+  gather_facts: no
+  roles:
+    - vmware
+

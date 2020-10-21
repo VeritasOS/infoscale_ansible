@@ -1,0 +1,6 @@
+[vms]
+#linux3-myee vm_ip=10.84.162.217
+#linux4-myee vm_ip=10.84.162.218
+linux5-myee vm_ip=10.84.162.219 vm_llt1=10.0.0.2 vm_llt2=10.1.0.2
+linux6-myee vm_ip=10.84.162.220 vm_llt1=10.0.0.3 vm_llt2=10.1.0.3
+linux7-myee vm_ip=10.84.162.221 vm_llt1=10.0.0.4 vm_llt2=10.1.0.4

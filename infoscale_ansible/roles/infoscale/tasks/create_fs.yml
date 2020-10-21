@@ -1,0 +1,15 @@
+---
+- name: Facters
+  veritas_infoscale:
+    module: site_facters
+  register: facts
+- name: Create CFS
+  veritas_infoscale:
+    module: cfsresource
+    state: present
+    sgname: dg1CFS
+    dgname: dg1
+    volname: testvol1
+    mnt: /testvol1
+    seednode: linux5-myee
+    facters: "{{ groups['all'] |map('extract', hostvars, ['facts','infoscale_facts'])| select()|list }}"

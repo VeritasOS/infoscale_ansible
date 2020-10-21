@@ -1,0 +1,17 @@
+---
+- name: Power on VMs 
+  vmware_guest_powerstate:
+    hostname: "{{ vc_host }}"
+    username: "{{ vc_user }}"
+       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       # Please do not put your password here in plain text.             !
+       # use the ansible-vault create utility to create an encrypted key !
+       # and pass it in using -e @password.yml --ask-vault-pass          !
+       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    password: "{{ vc_pass }}"
+    validate_certs: no
+    state: powered-on
+    name: "{{ guest_vm }}"
+    folder: "/Technical Marketing Lab/vm/ansible_infoscale_cluster"
+  delegate_to: localhost
+

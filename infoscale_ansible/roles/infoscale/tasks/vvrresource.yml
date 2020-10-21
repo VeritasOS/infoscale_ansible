@@ -1,0 +1,67 @@
+---
+- hosts: is1
+  gather_facts: False
+  tasks:
+  - name: Facters
+    veritas_infoscale:
+     module: site_facters
+    register: facts
+  - name: VVR/CVR Resource
+    veritas_infoscale:
+     module: vvrresource
+     aws: null
+     seednode: linux5-myee
+     primaryvip: 10.84.162.225
+     secondaryvip: 10.84.162.226
+     dgname: dg1
+     datavolname: testvol1
+     srlvolname: srl
+     rvgname: rvg_vvrtest1
+     # Don't populate agentinfo if all you need is vvr.
+     #agentinfo:
+     #   primary:
+     #       clusterlist:
+     #           - isc_linux567
+     #           - isc_linux8910
+     #       networkhosts:
+     #           - xx.xx.xx.xx
+     #       nic: eth0
+     #       netmask: 255.255.252.0
+     #       mountpoint: /mnt_test/primary
+     #   secondary:
+     #       nic: ens256
+     #       netmask: 255.255.252.0
+     #       mountpoint: /mnt_secondary
+     #       clusterlist:
+     #           - Cluster1
+     #           - Cluster2
+     #       networkhosts:
+     #           - xx.xx.xx.xx
+     #rvg_sg_name: custom_RVG
+     agentinfo:
+        primary:
+            clusterlist:
+                - isc_linux567
+                - isc_linux8910
+            networkhosts:
+                - 10.84.162.227
+            nic: ens192
+            netmask: 255.255.254.0
+            mountpoint_info:
+                - volname: testvol1
+                  mountname: /testvol1
+                  mount_res_name: custom_mount_new
+        secondary:
+            nic: ens192
+            netmask: 255.255.254.0
+            mountpoint_info:
+                - volname: testvol1
+                  mountname: /testvol1
+                  mount_res_name: custom_mount_new
+            clusterlist:
+                - isc_linux567
+                - isc_linux8910
+            networkhosts:
+                - 10.84.162.228
+     state: present
+     facters: "{{ groups['all'] |map('extract', hostvars, ['facts','infoscale_facts'])| select()|list }}"

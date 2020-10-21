@@ -1,0 +1,47 @@
+---
+- name: Add vxos-rhel-8-for-x86_64-baseos-rpms.repo
+  get_url:
+    url: http://artifactory-appliance.engba.veritas.com/artifactory/vxos-rhel8-server/vxos-rhel-8-for-x86_64-baseos-rpms.repo
+    dest: /etc/yum.repos.d/vxos-rhel-8-for-x86_64-baseos-rpms.repo
+
+- name: Add vxos-rhel-8-for-x86_64-appstream-rpms.repo
+  get_url:
+    url: http://artifactory-appliance.engba.veritas.com/artifactory/vxos-rhel8-server-appstream/vxos-rhel-8-for-x86_64-appstream-rpms.repo
+    dest: /etc/yum.repos.d/vxos-rhel-8-for-x86_64-appstream-rpms.repo 
+
+- name: Update the OS.
+  command: dnf update -y --nobest
+
+- name: Install python2
+  dnf:
+    name: python2
+    state: latest
+
+- name: Install netaddr for python2
+  pip:
+    executable: /usr/bin/pip2
+    name: netaddr
+
+- name: Add "export PATH=$PATH:/opt/VRTS/bin" to .bashrc
+  lineinfile:
+    path: /root/.bashrc
+    state: present
+    line: export PATH=$PATH:/opt/VRTS/bin
+    backup: yes
+
+- name: Set kernel to the older version. 
+  command: grubby --set-default /boot/vmlinuz-4.18.0-147.el8.x86_64
+
+- name: Add hosts to /etc/hosts.
+  blockinfile:
+    block: |
+      10.84.162.219   linux5-myee
+      10.84.162.220   linux6-myee
+      10.84.162.221   linux7-myee
+      10.84.162.222   linux8-myee
+      10.84.162.223   linux9-myee
+      10.84.162.224   linux10-myee
+    path: /etc/hosts
+
+- name: Reboot
+  reboot:    

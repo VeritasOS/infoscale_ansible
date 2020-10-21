@@ -1,0 +1,28 @@
+---
+- name: Facters
+  veritas_infoscale:
+    module: site_facters
+  register: facts
+- name: Create DG, Volume
+  veritas_infoscale:
+    module: vxvm_dgvolfs
+    state: present
+    dg1:
+      dgname: dg1
+      dgtype: shared
+      fss: 1
+      disks: ['linux5-myee_vmdk0_0','linux5-myee_vmdk0_1','linux6-myee_vmdk0_0','linux6-myee_vmdk0_1','linux7-myee_vmdk0_0','linux7-myee_vmdk0_1',]
+      volinfo: 
+        - - testvol1
+          - 80g
+          - layout=concat
+        - - srl
+          - 10g
+          - layout=concat
+        - - testvol2
+          - 5g
+          - layout=concat
+      seednode: linux5-myee
+      taginfo: null
+    facters: "{{ groups['all'] |map('extract', hostvars, ['facts','infoscale_facts'])| select()|list }}"
+  

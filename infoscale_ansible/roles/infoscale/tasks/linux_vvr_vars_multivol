@@ -1,0 +1,48 @@
+vtas_aws: null
+vtas_agentinfo:
+        rvg_sg_name: custom_RVG
+        primary:
+            clusterlist:
+                - Cluster1
+                - Cluster2
+            networkhosts:
+                - 10.209.100.1
+            nic: eth0
+            netmask: 255.255.252.0
+            mountpoint_info:
+                - volname: testvol1
+                  mountname: /mnt/primary
+                  mount_res_name: custom_mount_new
+                - volname: testvol2
+                  mountname: /mnt/primary/2
+                  mount_res_name: custom_mount_new2pri
+                  requires_res: ['custom_mount_new']
+                - volname: testvol3
+                  mountname: /mnt/primary/3
+                  mount_res_name: custom_mount_new3pri
+                  requires_res: ['custom_mount_new']
+        secondary:
+            nic: ens256
+            netmask: 255.255.252.0
+            mountpoint_info: 
+                - volname: testvol1
+                  mountname: /mnt_secondary
+                  mount_res_name: custom_mount_new
+                - volname: testvol2
+                  mountname: /mnt_secondary2
+                  mount_res_name: custom_mount_new2
+            clusterlist:
+                - Cluster1
+                - Cluster2
+            networkhosts:
+                - 10.209.128.1
+vtas_datavolname: testvol1,,testvol3,testvol2
+vtas_dgname: testdg2
+vtas_hosts: vvrclust1
+vtas_primaryvip: 10.209.101.246
+vtas_rvgname: rvg_vvrtest1
+vtas_secondaryvip: 10.209.128.140
+vtas_seednode: dl380g10-12-kvm-53
+vtas_srlvolname: srlvol1
+vtas_state: present
+

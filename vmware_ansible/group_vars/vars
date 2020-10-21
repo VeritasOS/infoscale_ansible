@@ -1,0 +1,45 @@
+#vc_host - enter your vcenter host hostname
+vc_host: 
+#vc_user - vcenter username
+vc_user:
+#vc_pass - vcenter password
+vc_pass:
+validate_cert: 'false'
+
+#Which VM are we cloning?
+template_name   : 'myee-linux-template'
+
+#Which datacenter are we using?
+vc_datacenter   : 'Technical Marketing Lab'
+
+#Which cluster in the datacenter should we clone to?
+#vc_cluster      : ''
+
+#If not using a cluster, which ESX host should clone to?
+esx_host        : 'scltselnx15.engba.veritas.com'
+
+# Pull the name of the VM from inventory.
+guest_vm        : "{{ inventory_hostname }}"
+
+datastore	: 'DsIBM01_scltselnx_vol01'
+
+# Set network info. Set individual IPs in the inventory using the vm_ip variable.
+# Note that network_name must match the network in VMWare EXACTLY.
+network_name     : 'VM Network'
+network_mask    : '255.255.254.0'
+network_gateway : '10.84.162.1'
+domain          : 'engba.veritas.com'
+dns_1           : '172.16.8.12'
+dns_2           : '172.16.8.13'
+
+#vc_dvswitch_name: 'dvSwitch'
+#portgroup_name  : 'Dportgroup_External'
+#net_adapter     : 'Network adapter 1'
+#
+llt1_name       : 'LLT1'
+llt1_mask       : '255.255.254.0'
+
+llt2_name       : 'LLT2'
+llt2_mask       : '255.255.254.0'
+
+
